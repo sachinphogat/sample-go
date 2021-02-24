@@ -17,7 +17,7 @@ stages:
   - name: Go Build
     container: golang
     steps:
-    - sh: go mod init
+    - sh: go mod init sample-go
     - sh: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o main
 #  - name: SonarQubeScan
 #    steps:
