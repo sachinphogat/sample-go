@@ -1,0 +1,39 @@
+agent:
+  kubernetes:
+  - name: golang
+    image: golang
+    command: 
+    - cat
+    tty: true
+
+environment:
+  variables:
+    variable_1: value_1
+
+stages:
+#  - name: Checkout
+#    steps:
+#    - invokeFunction: gitClone
+  - name: Go Build
+    container: golang
+    steps:
+    - sh: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o main
+#  - name: SonarQubeScan
+#    steps:
+#    - invokeFunction: sonarQubeScan
+#    - invokeFunction: sonarQubeQualityGate
+  - name: Docker Build
+    steps:
+    - invokeFunction: dockerBuild
+  - name: Docker Push
+    steps:
+    - invokeFunction: dockerPush
+  - name: Deploy
+    steps:
+    - invokeFunction: deployToClusters
+    post:
+      failure:
+        - sh: "echo Deployment Failed"
+post:
+  always:
+    - sh: "echo Finished"
