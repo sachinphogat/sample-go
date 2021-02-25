@@ -11,9 +11,6 @@ environment:
     variable_1: value_1
 
 stages:
-#  - name: Checkout
-#    steps:
-#    - invokeFunction: gitClone
   - name: Go Build
     container: golang
     steps:
